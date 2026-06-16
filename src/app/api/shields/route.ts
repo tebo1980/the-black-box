@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { calculateTenantCompliance, type TenantIncidentPayload } from '../../../lib/engines/tenant-shield.js';
+import { evaluateHoaViolation, type HoaViolationPayload } from '../../../lib/engines/hoa-shield.js';
 
 export async function POST(request: Request) {
   try {
@@ -14,6 +15,18 @@ export async function POST(request: Request) {
       };
 
       const result = calculateTenantCompliance(payload);
+      return NextResponse.json(result);
+    }
+
+    if (body.vaultType === 'HOA') {
+      const payload: HoaViolationPayload = {
+        noticeReceivedAt: new Date(body.noticeReceivedAt),
+        meetingOrFineDate: new Date(body.meetingOrFineDate),
+        hasPublishedSchedule: body.hasPublishedSchedule,
+        isSelectiveEnforcement: body.isSelectiveEnforcement,
+      };
+
+      const result = evaluateHoaViolation(payload);
       return NextResponse.json(result);
     }
 

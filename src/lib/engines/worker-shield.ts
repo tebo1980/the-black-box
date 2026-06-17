@@ -3,17 +3,17 @@ export interface WorkerViolationPayload {
   reportedOvertimeHours: number;
   actualLoggedHours: number;
   reportedTips: number;
-  actualLoggedTips: number; // For baseline comparison
+  actualLoggedTips: number;
   historicalPerformanceScore: number;
   terminationTriggered: boolean;
-  wageDisputeInquiry?: boolean; // Context flag for retaliation audit
 }
 
 export interface WorkerViolationResult {
   status: 'ACTIVE' | 'NON_COMPLIANT' | 'RETALIATION_ALARM';
   wageTheftDetected: boolean;
-  missingOvertimePremium?: number;
-  payrollDiscrepancyCode?: string;
+  lostOvertimeTaxDeductionValue?: number;
+  tipDiscrepancyDelta?: number;
+  tipAlertMessage?: string;
   defenseStrategy?: string[];
 }
 
@@ -26,7 +26,6 @@ export function evaluateWorkerViolation(payload: WorkerViolationPayload): Worker
     actualLoggedTips,
     historicalPerformanceScore,
     terminationTriggered,
-    wageDisputeInquiry,
   } = payload;
 
   const result: WorkerViolationResult = {
@@ -35,30 +34,31 @@ export function evaluateWorkerViolation(payload: WorkerViolationPayload): Worker
     defenseStrategy: [],
   };
 
-  // Overtime Skimming Audit
+  // Overtime Skimming Audit (Indiana SEA 243)
   const actualOvertimeHours = Math.max(0, actualLoggedHours - 40);
   if (reportedOvertimeHours < actualOvertimeHours) {
     result.wageTheftDetected = true;
     result.status = 'NON_COMPLIANT';
-    const missingHours = actualOvertimeHours - reportedOvertimeHours;
-    // FLSA regular rate standard: Time and a half
-    result.missingOvertimePremium = missingHours * (basePayRate * 1.5);
+    const missingHours = actualOvertimeHours - Math.max(0, reportedOvertimeHours);
+    // Calculate the worker's lost tax deduction value: (True Overtime Hours - Reported Overtime Hours) * (basePayRate * 0.5)
+    result.lostOvertimeTaxDeductionValue = missingHours * (Math.max(0, basePayRate) * 0.5);
   }
 
-  // Pretextual Retaliation Audit
-  if (terminationTriggered && historicalPerformanceScore > 85 && wageDisputeInquiry) {
+  // Pretextual Retaliation Defenses
+  if (terminationTriggered && historicalPerformanceScore > 85) {
     result.status = 'RETALIATION_ALARM';
-    result.defenseStrategy!.push('Generate Pretextual Discrimination Comparison Ledger');
+    result.defenseStrategy!.push('Generate Pretextual Discrimination Comparative Ledger for Small Claims Court');
   }
 
-  // Tip-Reporting Discrepancy Matrix
+  // Tip Reporting Tax Discrepancy Matrix
   if (reportedTips < actualLoggedTips) {
     result.wageTheftDetected = true;
     if (result.status !== 'RETALIATION_ALARM') {
       result.status = 'NON_COMPLIANT';
     }
-    result.payrollDiscrepancyCode = 'ERR_TIP_SKIMMING_DETECTED_2026';
-    result.defenseStrategy!.push('Audit W-2 Box 14 for Tip Discrepancies affecting State Tax Deductions.');
+    const delta = Math.max(0, actualLoggedTips) - Math.max(0, reportedTips);
+    result.tipDiscrepancyDelta = delta;
+    result.tipAlertMessage = "Employer's underreporting limits the worker's ability to claim the maximum $25,000 Indiana 2026 state tip deduction.";
   }
 
   return result;

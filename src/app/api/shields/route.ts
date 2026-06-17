@@ -40,7 +40,6 @@ export async function POST(request: Request) {
         actualLoggedTips: body.actualLoggedTips,
         historicalPerformanceScore: body.historicalPerformanceScore,
         terminationTriggered: body.terminationTriggered,
-        wageDisputeInquiry: body.wageDisputeInquiry,
       };
 
       const result = evaluateWorkerViolation(payload);

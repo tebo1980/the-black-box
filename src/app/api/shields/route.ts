@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { calculateTenantCompliance, type TenantIncidentPayload } from '../../../lib/engines/tenant-shield.js';
 import { evaluateHoaViolation, type HoaViolationPayload } from '../../../lib/engines/hoa-shield.js';
+import { evaluateWorkerViolation, type WorkerViolationPayload } from '../../../lib/engines/worker-shield.js';
 
 export async function POST(request: Request) {
   try {
@@ -27,6 +28,22 @@ export async function POST(request: Request) {
       };
 
       const result = evaluateHoaViolation(payload);
+      return NextResponse.json(result);
+    }
+
+    if (body.vaultType === 'WORKER') {
+      const payload: WorkerViolationPayload = {
+        basePayRate: body.basePayRate,
+        reportedOvertimeHours: body.reportedOvertimeHours,
+        actualLoggedHours: body.actualLoggedHours,
+        reportedTips: body.reportedTips,
+        actualLoggedTips: body.actualLoggedTips,
+        historicalPerformanceScore: body.historicalPerformanceScore,
+        terminationTriggered: body.terminationTriggered,
+        wageDisputeInquiry: body.wageDisputeInquiry,
+      };
+
+      const result = evaluateWorkerViolation(payload);
       return NextResponse.json(result);
     }
 

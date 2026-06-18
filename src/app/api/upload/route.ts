@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { auth } from '@clerk/nextjs/server';
-import { randomUUID } from 'crypto';
+import { put } from '@vercel/blob';
 
 export async function POST(request: Request) {
   try {
@@ -42,20 +42,26 @@ export async function POST(request: Request) {
       );
     }
 
-    // 4. Mock Cloud Staging
-    const fileId = randomUUID();
-    // Simulate streaming...
-    // const arrayBuffer = await file.arrayBuffer();
-    // const buffer = Buffer.from(arrayBuffer);
-    // await mockUploadToCloud(buffer);
+    // 4. Vercel Blob Live Staging
+    const filename = `${vaultType}/${file.name}`;
+    let blob;
+    try {
+      blob = await put(filename, file, { access: 'public' });
+    } catch (uploadError) {
+      console.error('Vercel Blob upload stream exception:', uploadError);
+      return NextResponse.json(
+        { error: 'Failed to upload document to the cloud storage.' },
+        { status: 500 }
+      );
+    }
 
     // 5. Return Payload
     return NextResponse.json(
       {
         success: true,
-        fileId: fileId,
-        vaultType: vaultType,
-        message: 'Document successfully ingested and staged to the security vault.',
+        url: blob.url,
+        size: file.size,
+        message: 'Document successfully streamed and immutably stored in the security vault.',
       },
       { status: 200 }
     );

@@ -3,6 +3,7 @@ import { calculateTenantCompliance, type TenantIncidentPayload } from '../../../
 import { evaluateHoaViolation, type HoaViolationPayload } from '../../../lib/engines/hoa-shield.js';
 import { evaluateWorkerViolation, type WorkerViolationPayload } from '../../../lib/engines/worker-shield.js';
 import { evaluateGigViolation, type GigWorkerViolationPayload } from '../../../lib/engines/gig-worker-shield.js';
+import { evaluateAutoViolation, type AutoViolationPayload } from '../../../lib/engines/auto-shield.js';
 
 export async function POST(request: Request) {
   try {
@@ -59,6 +60,21 @@ export async function POST(request: Request) {
       };
 
       const result = evaluateGigViolation(payload);
+      return NextResponse.json(result);
+    }
+
+    if (body.vaultType === 'AUTO') {
+      const payload: AutoViolationPayload = {
+        advertisedPrice: body.advertisedPrice,
+        totalFinancedAmount: body.totalFinancedAmount,
+        dealerAddOns: body.dealerAddOns,
+        aprPercentage: body.aprPercentage,
+        asIsStickerPresent: body.asIsStickerPresent,
+        stateThresholdCap: body.stateThresholdCap,
+        actualDocFeeCharged: body.actualDocFeeCharged,
+      };
+
+      const result = evaluateAutoViolation(payload);
       return NextResponse.json(result);
     }
 

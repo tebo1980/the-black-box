@@ -1,0 +1,34 @@
+
+> app@1.0.0 dev
+> next dev
+
+▲ Next.js 16.2.9 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.2:3000
+✓ Ready in 883ms
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+
+  We detected TypeScript in your project and reconfigured your tsconfig.json file for you.
+  The following suggested values were added to your tsconfig.json. These values can be changed to fit your project's needs:
+
+	- lib was set to dom,dom.iterable,esnext
+	- allowJs was set to true
+	- noEmit was set to true
+	- incremental was set to true
+	- include was set to ['next-env.d.ts', '.next/types/**/*.ts', '.next/dev/types/**/*.ts', '**/*.mts', '**/*.ts', '**/*.tsx']
+	- plugins was updated to add { name: 'next' }
+	- exclude was set to ['node_modules']
+
+  The following mandatory changes were made to your tsconfig.json:
+
+	- esModuleInterop was set to true (requirement for SWC / babel)
+	- moduleResolution was set to bundler (to match modern bundler resolution)
+	- resolveJsonModule was set to true (to match webpack resolution)
+
+
+○ Compiling /terminal ...
+ GET /terminal 200 in 6.9s (next.js: 6.5s, application-code: 400ms)

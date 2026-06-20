@@ -1,0 +1,19 @@
+{"timestamp":"00:00:01.677","source":"Server","level":"LOG","message":""}
+{"timestamp":"00:00:01.678","source":"Server","level":"LOG","message":"  We detected TypeScript in your project and reconfigured your tsconfig.json file for you."}
+{"timestamp":"00:00:01.678","source":"Server","level":"LOG","message":"  The following suggested values were added to your tsconfig.json. These values can be changed to fit your project's needs:\n"}
+{"timestamp":"00:00:01.678","source":"Server","level":"LOG","message":"  \t- lib was set to dom,dom.iterable,esnext"}
+{"timestamp":"00:00:01.678","source":"Server","level":"LOG","message":"  \t- allowJs was set to true"}
+{"timestamp":"00:00:01.678","source":"Server","level":"LOG","message":"  \t- noEmit was set to true"}
+{"timestamp":"00:00:01.678","source":"Server","level":"LOG","message":"  \t- incremental was set to true"}
+{"timestamp":"00:00:01.678","source":"Server","level":"LOG","message":"  \t- include was set to ['next-env.d.ts', '.next/types/**/*.ts', '.next/dev/types/**/*.ts', '**/*.mts', '**/*.ts', '**/*.tsx']"}
+{"timestamp":"00:00:01.679","source":"Server","level":"LOG","message":"  \t- plugins was updated to add { name: 'next' }"}
+{"timestamp":"00:00:01.679","source":"Server","level":"LOG","message":"  \t- exclude was set to ['node_modules']"}
+{"timestamp":"00:00:01.679","source":"Server","level":"LOG","message":""}
+{"timestamp":"00:00:01.679","source":"Server","level":"LOG","message":"  The following mandatory changes were made to your tsconfig.json:\n"}
+{"timestamp":"00:00:01.680","source":"Server","level":"LOG","message":"  \t- esModuleInterop was set to true (requirement for SWC / babel)"}
+{"timestamp":"00:00:01.680","source":"Server","level":"LOG","message":"  \t- moduleResolution was set to bundler (to match modern bundler resolution)"}
+{"timestamp":"00:00:01.680","source":"Server","level":"LOG","message":"  \t- resolveJsonModule was set to true (to match webpack resolution)"}
+{"timestamp":"00:00:01.680","source":"Server","level":"LOG","message":""}
+{"timestamp":"00:00:01.943","source":"Server","level":"LOG","message":""}
+{"timestamp":"00:05:28.532","source":"Server","level":"LOG","message":"○ Compiling /terminal ..."}
+{"timestamp":"00:05:33.422","source":"Browser","level":"INFO","message":"%cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold"}

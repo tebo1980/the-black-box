@@ -4,6 +4,7 @@ import { evaluateHoaViolation, type HoaViolationPayload } from '../../../lib/eng
 import { evaluateWorkerViolation, type WorkerViolationPayload } from '../../../lib/engines/worker-shield.js';
 import { evaluateGigViolation, type GigWorkerViolationPayload } from '../../../lib/engines/gig-worker-shield.js';
 import { evaluateAutoViolation, type AutoViolationPayload } from '../../../lib/engines/auto-shield.js';
+import { evaluateMedicalViolation, type MedicalViolationPayload } from '../../../lib/engines/medical-shield.js';
 
 export async function POST(request: Request) {
   try {
@@ -75,6 +76,20 @@ export async function POST(request: Request) {
       };
 
       const result = evaluateAutoViolation(payload);
+      return NextResponse.json(result);
+    }
+
+    if (body.vaultType === 'MEDICAL') {
+      const payload: MedicalViolationPayload = {
+        totalChargedAmount: body.totalChargedAmount,
+        itemizedLineItemsCount: body.itemizedLineItemsCount,
+        sampleProceduresCharged: body.sampleProceduresCharged,
+        medicareRegionalAllowableCap: body.medicareRegionalAllowableCap,
+        standardInsuranceCoveredAmount: body.standardInsuranceCoveredAmount,
+        unbundledBillingSuspected: body.unbundledBillingSuspected,
+      };
+
+      const result = evaluateMedicalViolation(payload);
       return NextResponse.json(result);
     }
 
